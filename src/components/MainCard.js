@@ -26,10 +26,9 @@ export default class MainCard extends Component {
     }
 
     triggerCounter = () => {
+        let intervalCounter =  20;
         setInterval(() => {
-            const {counter} = this.state
-            let intervalCounter =  counter;
-            if (counter <= 0) {
+            if (intervalCounter <= 0) {
                 return 
             }
             this.setState({
@@ -119,7 +118,7 @@ export default class MainCard extends Component {
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
     render() {
-        const {step, toAddress, amount, gasPrice, txHash, daiBalance} = this.state;
+        const {step, toAddress, amount, gasPrice, txHash, daiBalance, counter} = this.state;
         return (
             <Card raised style={{height: '80vh', width:'80vh'}}>
                 <Card.Content>
@@ -170,8 +169,11 @@ export default class MainCard extends Component {
                         <div>
                             {txHash && <p>Transaction funded: <a href={"https://rinkeby.etherscan.io/tx/" + txHash}>{txHash.substring(0,14)}...</a></p>}
                             <QRCode size="160" value="http://facebook.github.io/react/" /><br/>
-                            <Button style={{marginTop: '2%'}} onClick={() => this.confirmTx()}>Free Transaction</Button>
-                        </div>
+                            { counter > 1 ? 
+                            (<Button style={{marginTop: '2%'}} disabled>Available in {counter}</Button>)
+                            :(<Button style={{marginTop: '2%'}} onClick={() => this.confirmTx()}>Free Transaction</Button>)
+                            }
+                            </div>
                     }
                     {step === 3 &&
                         <div>
